@@ -15,8 +15,9 @@ services:
             - ./nginx/nginx.conf:/etc/nginx/nginx.conf
             - ./nginx/sites-available:/etc/nginx/sites-available
             - ./nginx/sites-enabled:/etc/nginx/sites-enabled
-            - ./nginx/cert:/etc/cert
             - ./nginx/log:/var/log/nginx
+            - ./certbot/conf:/etc/letsencrypt
+            - ./certbot/data:/etc/nginx/cert/data
         depends_on:
             - php
             - mysql
@@ -63,5 +64,15 @@ services:
             - "58080:80"
         environment:
             PMA_HOST: zkmysql
+        networks:
+          - lemp
+    certbot:
+        image: certbot:latest
+        command: certonly --webroot --webroot-path=/etc/nginx/cert/data --email your-email@domain.com --agree-tos --no-eff-email -d sub.domain.com
+        volumes:
+          - ./certbot/conf:/etc/letsencrypt
+          - ./certbot/data:/etc/nginx/cert/data
+          - ./certbot/lib:/var/lib/letsencrypt
+          - ./certbot/log:/var/log/letsencrypt
         networks:
           - lemp
