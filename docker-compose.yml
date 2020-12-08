@@ -18,7 +18,8 @@ services:
             - ./nginx/cert:/etc/cert
             - ./nginx/log:/var/log/nginx
         depends_on:
-            - php
+            - php5
+            - php7
             - mysql
         privileged: true
         networks:
