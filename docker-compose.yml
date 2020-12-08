@@ -36,11 +36,11 @@ services:
             TZ: ${TZ:-Asia/Shanghai}
         networks:
             - lemp
-    php:
+    php7:
         build:
-            context: ./php/.
+            context: ./php7/.
             dockerfile: Dockerfile
-        container_name: ${PHP_CONTAINER:-php}
+        container_name: ${PHP7_CONTAINER:-php7}
         volumes:
             - ./src:/var/www/html
         ports:
