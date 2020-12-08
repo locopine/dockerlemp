@@ -47,6 +47,17 @@ services:
             - "59000:9000"
         networks:
             - lemp
+    php5:
+        build:
+            context: ./php5/.
+            dockerfile: Dockerfile
+        container_name: ${PHP5_CONTAINER:-php5}
+        volumes:
+            - ./src:/var/www/html
+        ports:
+            - "59001:9000"
+        networks:
+            - lemp
     redis:
         image: redis:latest
         container_name: ${REDIS_CONTAINER:-redis}
