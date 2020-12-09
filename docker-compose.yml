@@ -37,6 +37,18 @@ services:
             TZ: ${TZ:-Asia/Shanghai}
         networks:
             - lemp
+    mongo:
+        image: mongo:latest
+        container_name: ${MONGO_CONTAINER:-mongo}
+        ports:
+            - "57017:27017"
+        volumes:
+            - ./mongo:/var/lib/mongo
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: root
+        networks:
+            - lemp
     php7:
         build:
             context: ./php7/.

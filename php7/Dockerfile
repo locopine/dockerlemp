@@ -13,6 +13,7 @@ RUN apt-get update \
     && docker-php-ext-install bcmath \
     && docker-php-ext-install pdo_mysql \
     && pecl install redis && docker-php-ext-enable redis \
+    && pecl install mongodb && docker-php-ext-enable mongodb \
     && pecl install xdebug && docker-php-ext-enable xdebug
 
 # install composer
