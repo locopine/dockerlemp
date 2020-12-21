@@ -17,13 +17,18 @@ services:
             - ./nginx/sites-enabled:/etc/nginx/sites-enabled
             - ./nginx/cert:/etc/cert
             - ./nginx/log:/var/log/nginx
+        environment:
+            TZ: ${TZ:-Asia/Shanghai}
         depends_on:
             - php5
             - php7
             - mysql
         privileged: true
         networks:
-            - lemp
+                lemp:
+                  aliases:
+                   - domain1.com
+                   - domain2.com
     mysql:
         image: mariadb:latest
         container_name: ${MYSQL_CONTAINER:-mysql}
@@ -81,12 +86,28 @@ services:
             - "56379:6379"
         networks:
             - lemp
-    phpmyadmin:
-        image: phpmyadmin:latest
-        container_name: ${PMA_CONTAINER:-phpmyadmin}
+    pma1:
+        build:
+            context: ./phpmyadmin/.
+            dockerfile: Dockerfile
+        container_name: pma-dev
         ports:
             - "58080:80"
         environment:
             PMA_HOST: ${PMA_HOST:-mysql}
+            PMA_ARBITRARY: 1
+        networks:
+          - lemp
+    pma2:
+        build:
+            context: ./phpmyadmin/.
+            dockerfile: Dockerfile
+        container_name: pma-ro
+        ports:
+            - "58081:80"
+        environment:
+            PMA_HOST: ${PMA_HOST:-mysql}
+            PMA_ARBITRARY: 1
+            PMA_PORT: 3307
         networks:
           - lemp
