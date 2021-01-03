@@ -8,7 +8,7 @@ services:
         image: nginx:latest
         container_name: ${NGINX_CONTAINER:-nginx}
         ports:
-            - "50080:80"
+            - "80:80"
             - "50443:443"
         volumes:
             - ./src:/var/www/html
@@ -86,13 +86,25 @@ services:
             - "56379:6379"
         networks:
             - lemp
+    pma:
+        build:
+            context: ./phpmyadmin/.
+            dockerfile: Dockerfile
+        container_name: ${PMA_CONTAINER:-pma}
+        ports:
+            - "58080:80"
+        environment:
+            PMA_HOST: ${PMA_HOST:-mysql}
+            PMA_ARBITRARY: 1
+        networks:
+            - lemp
     pma1:
         build:
             context: ./phpmyadmin/.
             dockerfile: Dockerfile
-        container_name: pma-dev
+        container_name: ${PMA_CONTAINER:-pma}-dev
         ports:
-            - "58080:80"
+            - "58081:80"
         environment:
             PMA_HOST: ${PMA_HOST:-mysql}
             PMA_ARBITRARY: 1
@@ -102,9 +114,9 @@ services:
         build:
             context: ./phpmyadmin/.
             dockerfile: Dockerfile
-        container_name: pma-ro
+        container_name: ${PMA_CONTAINER:-pma}-test
         ports:
-            - "58081:80"
+            - "58082:80"
         environment:
             PMA_HOST: ${PMA_HOST:-mysql}
             PMA_ARBITRARY: 1
