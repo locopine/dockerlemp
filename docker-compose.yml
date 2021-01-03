@@ -95,7 +95,6 @@ services:
             - "58080:80"
         environment:
             PMA_HOST: ${PMA_HOST:-mysql}
-            PMA_ARBITRARY: 1
         networks:
             - lemp
     pma1:
