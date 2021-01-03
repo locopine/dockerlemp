@@ -9,7 +9,7 @@ services:
         container_name: ${NGINX_CONTAINER:-nginx}
         ports:
             - "80:80"
-            - "50443:443"
+            - "443:443"
         volumes:
             - ./src:/var/www/html
             - ./nginx/nginx.conf:/etc/nginx/nginx.conf
@@ -29,7 +29,7 @@ services:
         image: mariadb:latest
         container_name: ${MYSQL_CONTAINER:-mysql}
         ports:
-            - "53306:3306"
+            - "3306:3306"
         volumes:
             - ./mysql:/var/lib/mysql
         environment:
@@ -46,7 +46,7 @@ services:
         volumes:
             - ./src:/var/www/html
         ports:
-            - "59000:9000"
+            - "9000:9000"
         networks:
             - lemp
     redis:
@@ -56,14 +56,14 @@ services:
             - ./redis/redis.conf:/etc/redis/redis.conf
             - ./redis/data:/data
         ports:
-            - "56379:6379"
+            - "6379:6379"
         networks:
             - lemp
     pma:
         image: phpmyadmin:latest
         container_name: ${PMA_CONTAINER:-pma}
         ports:
-            - "58080:80"
+            - "8080:80"
         environment:
             PMA_HOST: ${PMA_HOST:-mysql}
         networks:
